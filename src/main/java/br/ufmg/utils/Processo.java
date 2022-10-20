@@ -283,7 +283,7 @@ public class Processo implements Runnable {
 	}
 	
 	public void run() {
-		System.setProperty("webdriver.gecko.driver", "/bin/geckodriver");
+		System.setProperty("webdriver.gecko.driver", "/home/vrjuliao/.local/bin/geckodriver");
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 		
 		getProxyServer();

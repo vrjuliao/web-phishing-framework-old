@@ -33,6 +33,8 @@ import br.ufmg.utils.*;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+// import net.lightbody.bmp.BrowserMobProxy;
+
 public class App {
 	
 	private int instancias;
@@ -48,13 +50,16 @@ public class App {
 	private BlockingQueue<String> listaUrls;
 	private AtomicBoolean reiniciarProcessos;
 	private AtomicBoolean terminarProcessos;
+
+	// private String dir_prefix = "/home/seluser/tool";
+	private String dir_prefix = "/home/vrjuliao/workfolder/web-phishing-framework";
 	
 	public App() {
 		
 		this.instancias = 10;
 		this.timeout = 15;
 		this.flag = "normal";
-		this.dirnome = "/home/heitor/mypython/precompiled_packets/urls/repo";
+		this.dirnome = this.dir_prefix+"/data/blacklist/";
 		listaUrls = new LinkedBlockingDeque<String>();
 		reiniciarProcessos =  new AtomicBoolean();
 		reiniciarProcessos.set(false);
@@ -65,7 +70,7 @@ public class App {
 	/* Inicialização de variáveis.*/
 	public App(int instancias,int timeout,String flag,int limite_requisicoes) {
 		this.whitelist = new Whitelist();
-		this.blacklist = new Whitelist("/home/tlhop/aplicacao_urls/urls/blacklist/");
+		this.blacklist = new Whitelist(this.dir_prefix+"/data/blacklist/");
 		this.instancias = instancias;
 		this.timeout = timeout;
 		this.flag = flag;
@@ -78,6 +83,8 @@ public class App {
 			this.fdir = "/home/tlhop/aplicacao_urls/urls/finallogs/";
 			this.dirnome = "/home/tlhop/aplicacao_urls/urls/repo";
 		}
+		this.fdir = this.dir_prefix+"/data/finallogs/";
+		this.dirnome = this.dir_prefix+"/data/repository/";
 		listaUrls = new LinkedBlockingDeque<String>();
 		reiniciarProcessos =  new AtomicBoolean();
 		reiniciarProcessos.set(false);
@@ -93,6 +100,7 @@ public class App {
 	public void obterArquivos() {
 		
 		File repo = new File(dirnome);
+		System.out.println(repo.isDirectory());
 		if ( repo.isDirectory() ) {
 			arquivos = repo.listFiles();
 			Arrays.sort(arquivos, Comparator.comparingLong(File::lastModified));
@@ -125,9 +133,9 @@ public class App {
 				e.printStackTrace();
 			}
 			
-			if (!this.flag.contentEquals("teste")) {
-				arquivo.delete();
-			}
+//			if (!this.flag.contentEquals("teste")) {
+//				arquivo.delete();
+//			}
 		}
 		/*for (int i = 0;i < this.instancias;i++) {
 			listaUrls.add("poison_pill");
@@ -143,7 +151,8 @@ public class App {
 		
 		BufferedReader br = null;
 		try {
-			br = new BufferedReader(new FileReader("/home/tlhop/aplicacao_urls/urls/shellscripts/sys/operante"));
+			br = new BufferedReader(new FileReader(this.dir_prefix+"/data/operante/operante.txt"));
+			System.out.println("OPERANTE");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			System.exit(-1);
@@ -167,8 +176,9 @@ public class App {
 	/* Função principal. Administa o multithreading */
 	@SuppressWarnings("deprecation")
 	public void administrarProcessos() {
+		System.out.println("reiniciarProcessos");
 		SimpleDateFormat dataInicio = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-		
+
 		Date data = new Date();
 		String dataFormatada = dataInicio.format(data);
 		String inicio = "Inicio em "+dataFormatada+"\n";
@@ -177,7 +187,6 @@ public class App {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		
 		MonitorMemoria memoryMonitor = new MonitorMemoria(reiniciarProcessos);
 		Thread monitor = new Thread(memoryMonitor);
 		monitor.start();

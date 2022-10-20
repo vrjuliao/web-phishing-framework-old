@@ -14,6 +14,7 @@ public class Main {
         App aplicacao = new App(instancias,timeout,flag,limite_requisicoes);
         aplicacao.configurarCaminhos();
         aplicacao.obterArquivos();
+        System.out.println("admnistrarProcesso");
         aplicacao.obterUrls();
         aplicacao.administrarProcessos();
     }

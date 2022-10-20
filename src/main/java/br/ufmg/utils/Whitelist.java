@@ -17,7 +17,8 @@ public class Whitelist {
 	
 	public Whitelist() {
 		whitelistedUrls = new HashMap<String,Integer>();
-		dir = "/home/tlhop/aplicacao_urls/urls/whitelist/";
+		dir = "/home/vrjuliao/workfolder/web-phishing-framework/data/whitelist/";
+		// dir = "/home/seluser/tool/data/whitelist/";
 		getWhitelistedUrls();
 	}
 	
@@ -36,6 +37,7 @@ public class Whitelist {
 		}else {
 			
 		}
+		System.out.println(repo.isDirectory());
 		
 		Charset charset = Charset.forName("UTF-8");
 		for (File arquivo : arquivos) {

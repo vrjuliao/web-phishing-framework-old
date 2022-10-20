@@ -1,0 +1,15 @@
+version: '3'
+services:
+  phishing-framework:
+    image: web-phishing-framework
+    container_name: phishing-framework 
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    entrypoint: /bin/bash
+    stdin_open: true
+    tty: true
+    volumes:
+    - ./:/home/seluser/tool
+    ports:
+    - 4444:4444
